@@ -1,30 +1,50 @@
-const fs = require("fs/promises");
-const path = require("path");
 const express = require("express");
+const Joi = require("joi");
+const data = require("../../models/contacts");
+const { HttpError } = require("../../helpers");
 
 const router = express.Router();
 
+const addSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
+});
+
 router.get("/", async (req, res, next) => {
   try {
-    const data = await fs.readFile(
-      path.join(__dirname, "..", "..", "models", "contacts.json"),
-      "utf-8"
-    );
-    res.send(JSON.parse(data));
+    const result = await data.listContacts();
+    res.json(result);
   } catch (error) {
-    console.error(error);
-
-    res.status(500).send("Internul server error");
+    next(error);
   }
-  // res.json({ message: "template message" });
 });
 
 router.get("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const { contactId } = req.params;
+    const result = await data.getContactById(contactId);
+    if (!result) {
+      throw HttpError(404, "Not found");
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post("/", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    // console.log("req.body", req.body);
+    const { error } = addSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+    const result = await data.addContact(req.body);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.delete("/:contactId", async (req, res, next) => {
@@ -32,7 +52,21 @@ router.delete("/:contactId", async (req, res, next) => {
 });
 
 router.put("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const { error } = addSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+    const { contactId } = req.params;
+    const result = await data.updateContact(contactId, req.body);
+    if (!result) {
+      throw HttpError(404, "Not found");
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+  // res.json({ message: "template message" });
 });
 
 module.exports = router;
