@@ -1,6 +1,7 @@
 const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
+const { log } = require("console");
 
 const contactsPath = path.join(__dirname, "contacts.json");
 
@@ -25,19 +26,16 @@ const getContactById = async (contactId) => {
 };
 
 const removeContact = async (contactId) => {
-  try {
-    const data = await read();
-    const index = data.findIndex((contact) => contact.id === contactId);
-    if (index === -1) {
-      return null;
-    }
-    const newContact = [...data.slice(0, index), ...data.slice(index + 1)];
-    await write(newContact);
-    return data[index];
-  } catch (error) {
-    error.message("Cannot delete contact");
-    throw error;
+  const data = await read();
+  console.log("contactId", contactId);
+  const index = data.findIndex((contact) => contact.id === contactId);
+  console.log("index", index);
+  if (index === -1) {
+    return null;
   }
+  const newContact = [...data.slice(0, index), ...data.slice(index + 1)];
+  await write(newContact);
+  return data[index];
 };
 
 const addContact = async (body) => {
@@ -52,19 +50,14 @@ const addContact = async (body) => {
 };
 
 const updateContact = async (contactId, body) => {
-  try {
-    const contacts = await read();
-    const index = contacts.findIndex((contact) => contact.id === contactId);
-    if (index === -1) {
-      return null;
-    }
-    contacts[index] = { contactId, ...body };
-    await write(contacts);
-    return contacts[index];
-  } catch (error) {
-    error.message("Cannot updated contact");
-    throw error;
+  const contacts = await read();
+  const index = contacts.findIndex((contact) => contact.id === contactId);
+  if (index === -1) {
+    return null;
   }
+  contacts[index] = { id: contactId, ...body };
+  await write(contacts);
+  return contacts[index];
 };
 
 module.exports = {
