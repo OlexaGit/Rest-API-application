@@ -33,19 +33,13 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
-const registerSchema = Joi.object({
+const registerAndLoginSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
 });
 
-// const loginSchema = Joi.object({
-//   email: Joi.string().pattern(emailRegexp).required(),
-//   password: Joi.string().min(6).required(),
-// });
-
 const schemas = {
-  registerSchema,
-  //   loginSchema,
+  registerAndLoginSchema,
 };
 
 const User = model("user", userSchema);
