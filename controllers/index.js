@@ -8,6 +8,7 @@ const updateContact = require("./updateContact");
 const updateStatusContact = require("./updateStatusContact");
 const register = require("./authRegister");
 const login = require("./authLogin");
+const getCurrent = require("./getCurrent");
 
 module.exports = {
   listContacts: ctrlWrapper(listContacts),
@@ -18,4 +19,5 @@ module.exports = {
   updateStatusContact: ctrlWrapper(updateStatusContact),
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  getCurrent: ctrlWrapper(getCurrent),
 };
