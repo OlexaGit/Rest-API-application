@@ -38,7 +38,7 @@ router.patch(
   authenticate,
   isValidId,
   validateBodyFavorite(schemas.updateFavoriteSchema),
-  ctrl.updateStatusContact
+  ctrl.updateContact
 );
 
 module.exports = router;
