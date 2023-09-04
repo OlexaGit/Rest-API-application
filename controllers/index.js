@@ -10,7 +10,8 @@ const getCurrent = require("./authGetCurrent");
 const logout = require("./authLogout");
 const updateUserSubscription = require("./updateUserSubscription");
 const updateAvatar = require("./updateAvatar");
-const verifyEmail = require("./verifyEmail");
+const verifyEmail = require("./authVerifyEmail");
+const resendVerifyEmail = require("./authResendVerifyEmail");
 
 module.exports = {
   listContacts: ctrlWrapper(listContacts),
@@ -25,4 +26,5 @@ module.exports = {
   updateUserSubscription: ctrlWrapper(updateUserSubscription),
   updateAvatar: ctrlWrapper(updateAvatar),
   verifyEmail: ctrlWrapper(verifyEmail),
+  resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
 };

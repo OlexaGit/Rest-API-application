@@ -58,9 +58,14 @@ const changeUserSubscriptionSchema = Joi.object({
     .messages({ "any.required": "missing field subscription" }),
 });
 
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+});
+
 const schemas = {
   registerAndLoginSchema,
   changeUserSubscriptionSchema,
+  emailSchema,
 };
 
 const User = model("user", userSchema);
