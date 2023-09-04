@@ -21,14 +21,14 @@ const nodemailerConfig = {
   port: 465, //25, 465, 2525
   secure: true,
   auth: {
-    user: "radikalzvit@ukr.net",
+    user: "tovhexa@meta.ua",
     pass: META_PASSWORD,
   },
 };
 const transport = nodemailer.createTransport(nodemailerConfig);
 
 const sendEmail = async (data) => {
-  const email = { ...data, from: "dlta066php@gmail.com" };
+  const email = { ...data, from: "tovhexa@meta.ua" };
   transport.sendMail(email);
   return true;
 };
